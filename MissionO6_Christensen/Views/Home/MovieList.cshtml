@@ -1,28 +1,38 @@
 @model IEnumerable<MissionO6_Christensen.Models.Movie>
 
-<h2>Movie Collection</h2>
+<h2>Movie List</h2>
+
+<!-- ✅ Table to display the list of movies -->
 <table class="table">
     <thead>
     <tr>
-        <th>Title</th>
-        <th>Category</th>
-        <th>Director</th>
-        <th>Year</th>
-        <th>Rating</th>
+        <th>Title</th>           <!-- ✅ Movie title -->
+        <th>Year</th>            <!-- ✅ Year of release -->
+        <th>Director</th>        <!-- ✅ Movie director -->
+        <th>Rating</th>          <!-- ✅ Movie rating (G, PG, etc.) -->
+        <th>Edited</th>          <!-- ✅ Whether the movie is edited -->
+        <th>Copied to Plex</th>  <!-- ✅ Whether the movie is copied to Plex -->
+        <th>Actions</th>         <!-- ✅ Actions for editing and deleting -->
     </tr>
     </thead>
     <tbody>
-    @foreach (var movie in Model)
+    @foreach (var movie in Model)  // ✅ Loop through the list of movies
     {
         <tr>
-            <td>@movie.Title</td>
-            <td>@movie.Category</td>
-            <td>@movie.Director</td>
-            <td>@movie.Year</td>
-            <td>@movie.Rating</td>
+            <td>@movie.Title</td>  <!-- ✅ Display movie title -->
+            <td>@movie.Year</td>   <!-- ✅ Display release year -->
+            <td>@movie.Director</td>  <!-- ✅ Display director -->
+            <td>@movie.Rating</td>  <!-- ✅ Display movie rating -->
+            <td>@(movie.Edited ? "Yes" : "No")</td>  <!-- ✅ Display "Yes" if edited, otherwise "No" -->
+            <td>@(movie.CopiedToPlex ? "Yes" : "No")</td>  <!-- ✅ Display "Yes" if copied to Plex, otherwise "No" -->
+            <td>
+                <!-- ✅ Button to edit the movie -->
+                <a asp-action="EditMovie" asp-route-id="@movie.MovieId" class="btn btn-primary">Edit</a>
+                
+                <!-- ✅ Button to delete the movie (with confirmation prompt) -->
+                <a asp-action="DeleteMovie" asp-route-id="@movie.MovieId" class="btn btn-success" onclick="return confirm('Are you sure?');">Delete</a>
+            </td>
         </tr>
     }
     </tbody>
 </table>
-
-<a asp-action="EnterMovie" class="btn btn-primary">Add a Movie</a>

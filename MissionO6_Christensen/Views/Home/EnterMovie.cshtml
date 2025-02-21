@@ -2,27 +2,35 @@
 
 <h2>Add a New Movie</h2>
 
-<form asp-action="EnterMovie" method="post">
+<!-- Form to add or edit a movie -->
+<form asp-action="SaveMovie" asp-controller="Home" method="post">
+    @Html.AntiForgeryToken() <!-- Prevents CSRF attacks -->
+
+    <!-- Movie Title Input -->
     <div class="form-group">
         <label asp-for="Title"></label>
         <input asp-for="Title" class="form-control" required />
     </div>
 
+    <!-- Movie Category Input -->
     <div class="form-group">
         <label asp-for="Category"></label>
         <input asp-for="Category" class="form-control" required />
     </div>
 
+    <!-- Movie Director Input -->
     <div class="form-group">
         <label asp-for="Director"></label>
         <input asp-for="Director" class="form-control" required />
     </div>
 
+    <!-- Movie Year Input (Must be 1888 or later) -->
     <div class="form-group">
         <label asp-for="Year"></label>
-        <input asp-for="Year" type="number" class="form-control" required />
+        <input asp-for="Year" type="number" class="form-control" required min="1888" />
     </div>
 
+    <!-- Movie Rating Dropdown -->
     <div class="form-group">
         <label asp-for="Rating"></label>
         <select asp-for="Rating" class="form-control" required>
@@ -33,20 +41,24 @@
         </select>
     </div>
 
+    <!-- Checkbox for Edited -->
     <div class="form-group">
         <label asp-for="Edited"></label>
         <input asp-for="Edited" type="checkbox" />
     </div>
 
+    <!-- Optional: Who the Movie is Lent To -->
     <div class="form-group">
         <label asp-for="LentTo"></label>
         <input asp-for="LentTo" class="form-control" />
     </div>
 
+    <!-- Optional: Notes (Limited to 25 characters) -->
     <div class="form-group">
         <label asp-for="Notes"></label>
         <input asp-for="Notes" class="form-control" maxlength="25" />
     </div>
 
+    <!-- Submit Button -->
     <button type="submit" class="btn btn-success">Save Movie</button>
 </form>

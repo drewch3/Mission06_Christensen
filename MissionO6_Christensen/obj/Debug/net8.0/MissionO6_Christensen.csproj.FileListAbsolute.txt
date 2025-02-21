@@ -131,3 +131,4 @@
 /Users/Shared/MissionO6_Christensen/MissionO6_Christensen/obj/Debug/net8.0/MissionO6_Christensen.pdb
 /Users/Shared/MissionO6_Christensen/MissionO6_Christensen/obj/Debug/net8.0/MissionO6_Christensen.genruntimeconfig.cache
 /Users/Shared/MissionO6_Christensen/MissionO6_Christensen/obj/Debug/net8.0/ref/MissionO6_Christensen.dll
+/Users/Shared/MissionO6_Christensen/MissionO6_Christensen/obj/Debug/net8.0/MissionO6_Christensen.sourcelink.json

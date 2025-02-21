@@ -6,44 +6,87 @@ namespace MissionO6_Christensen.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly MovieContext _context; // Change MovieDbContext to MovieContext
+        // Dependency injection for database context
+        private readonly MovieContext _context;
 
         public HomeController(MovieContext context)
         {
             _context = context;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
+        // ✅ GET method: Display the "Get to Know Joel" page
         public IActionResult GetToKnowJoel()
         {
             return View();
         }
 
-        public IActionResult MovieList()
-        {
-            var movies = _context.Movies.ToList();
-            return View(movies);
-        }
-
-        public IActionResult EnterMovie()
+        // ✅ GET method: Display the home page
+        public IActionResult Index()
         {
             return View();
         }
 
-        [HttpPost]
-        public IActionResult EnterMovie(Movie movie)
+        // ✅ GET method: Display the form to add a new movie
+        [HttpGet]
+        public IActionResult EnterMovie()
         {
-            if (ModelState.IsValid)
+            return View(); // 🔹 Ensure it returns the EnterMovie.cshtml view
+        }
+        [HttpGet]
+        public IActionResult EditMovie(int id)
+        {
+            var movie = _context.Movies.Find(id);
+            if (movie == null)
+            {
+                return NotFound(); // 🔹 Return 404 if the movie is not found
+            }
+
+            return View("EnterMovie", movie); // 🔹 Load the same form for editing
+        }
+
+
+        // ✅ POST method: Handles adding or updating a movie
+        [HttpPost]
+        [ValidateAntiForgeryToken] // 🔹 Security best practice to prevent CSRF attacks
+        public IActionResult SaveMovie(Movie movie)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("EnterMovie", movie); // Return to form if validation fails
+            }
+
+            if (movie.MovieId == 0)  // If MovieId is 0, it's a new movie
             {
                 _context.Movies.Add(movie);
-                _context.SaveChanges();
-                return RedirectToAction("MovieList"); // ✅ Redirects to the Movie List page
             }
-            return View(movie);
+            else
+            {
+                _context.Movies.Update(movie); // Otherwise, update existing movie
+            }
+
+            _context.SaveChanges(); // Commit changes to the database
+            return RedirectToAction("MovieList"); // Redirect to the movie list after saving
+        }
+
+        // ✅ GET method: Display the list of movies
+        public IActionResult MovieList()
+        {
+            var movies = _context.Movies.ToList();
+            return View(movies); // ✅ Corrected: Pass list of movies directly
+        }
+
+        // ✅ POST method: Delete a movie by ID
+        public IActionResult DeleteMovie(int id)
+        {
+            var movie = _context.Movies.Find(id);
+            if (movie == null)
+            {
+                return NotFound(); // Return 404 if movie is not found
+            }
+
+            _context.Movies.Remove(movie);
+            _context.SaveChanges(); // Commit deletion to the database
+            return RedirectToAction("MovieList"); // Redirect to the movie list after deletion
         }
     }
 }
